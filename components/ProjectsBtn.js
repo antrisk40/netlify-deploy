@@ -11,7 +11,7 @@ const ProjectsBtn = () => {
   };
 
   return (
-    <div className="mx-auto xl:mx-0 relative z-50 cursor-pointer">
+    <div className="mx-auto xl:mx-0 relative z-20 cursor-pointer">
       <div
         className="relative w-[185px] h-[185px] flex justify-center items-center bg-circleStar bg-cover bg-center bg-no-repeat group"
         onClick={handleButtonClick}
