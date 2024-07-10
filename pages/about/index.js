@@ -11,10 +11,8 @@ import {
   FaBootstrap,
   FaNodeJs,
 } from "react-icons/fa";
-import {
-  SiNextdotjs,
-  SiFramer,
-} from "react-icons/si";
+import { SiNextdotjs, SiFramer } from "react-icons/si";
+import Modal from "./Modal"; // Adjust the import path accordingly
 
 const aboutData = [
   {
@@ -55,7 +53,6 @@ const aboutData = [
             key="bootstrap"
             className="inline-block mx-2 text-xl text-green-600"
           />,
-          
         ],
       },
       {
@@ -75,6 +72,11 @@ const aboutData = [
         title: "most disciplined candidate (NCC)",
         stage: "2020",
       },
+      {
+        title: "Got selected for 3 month internship at Teaching Hub",
+        stage: "2024",
+        pdf: "offer-letter.pdf",
+      },
     ],
   },
   {
@@ -83,6 +85,10 @@ const aboutData = [
       {
         title: "Web Developer (octanet software services remote)",
         stage: "2023(Oct-Nov)",
+      },
+      {
+        title: "Multidisciplinary Learning and Research Club (MITS, Gwalior)",
+        stage: "2024(Jan) - currently",
       },
     ],
   },
@@ -105,10 +111,11 @@ const aboutData = [
 const About = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [showNav, setShowNav] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [pdfPath, setPdfPath] = useState("");
 
   const toggleSection = (index) => {
     if (activeSection === index) {
-      // Do nothing if clicking on the already active section
       return;
     }
     setActiveSection(index);
@@ -118,11 +125,20 @@ const About = () => {
     setShowNav(!showNav);
   };
 
+  const handleViewOfferLetter = (path) => {
+    setPdfPath(path);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="max-w-screen-md mx-auto pt-28 pl-5 pr-5">
       <div className="mb-8 p-6 border rounded-lg relative">
         <div
-          className="cursor-pointer md:hidden absolute top-0 right-0 p-3 z-30" 
+          className="cursor-pointer md:hidden absolute top-0 right-0 p-3 z-30"
           onClick={toggleNav}
         >
           <FaBars className="text-lg font-bold focus:outline-none transition-all duration-300 text-purple-800 hover:text-red-500" />
@@ -168,7 +184,6 @@ const About = () => {
               {aboutData[activeSection]?.info.map((item, itemIndex) => (
                 <li key={itemIndex} className="mb-2">
                   <strong className="text-lg flex">
-                    {" "}
                     <FontAwesomeIcon
                       icon={faHandPointRight}
                       className="mr-1 w-5 h-5"
@@ -177,6 +192,16 @@ const About = () => {
                   </strong>
                   {item.stage && (
                     <span className="text-gray-400"> - {item.stage}</span>
+                  )}
+                  {item.pdf && (
+                    <div>
+                      <button
+                        onClick={() => handleViewOfferLetter(item.pdf)}
+                        className="text-purple-800 hover:underline"
+                      >
+                        View Offer Letter
+                      </button>
+                    </div>
                   )}
                   {item.icons && (
                     <div className="mt-2 flex gap-2 flex-wrap">
@@ -191,6 +216,15 @@ const About = () => {
           </div>
         )}
       </div>
+      <Modal show={showModal} onClose={handleCloseModal}>
+        <iframe
+          src={pdfPath}
+          title="Offer Letter"
+          width="100%"
+          height="500px"
+          className="rounded-lg shadow-lg"
+        ></iframe>
+      </Modal>
     </div>
   );
 };
